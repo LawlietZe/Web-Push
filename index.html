@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+
+    <button onclick="subscribe()">Subscribe</button>
+  </body>
+  <script>
+
+
+    addEventListener('load', async ()=> {
+      if ("serviceWorker" in navigator && "PushManager" in window) {
+      console.log("Service Worker and Push is supported");
+      navigator.serviceWorker
+        .register("sw.js")
+        .then(function (swReg) {
+          console.log("Service Worker is registered", swReg);
+          // swRegistration = swReg;
+        })
+        .catch(function (error) {
+          console.error("Service Worker Error", error);
+        });
+    } else {
+      console.warn("Push messaging is not supported");
+      pushButton.textContent = "Push Not Supported";
+    }
+    })
+
+    async function subscribe() {
+      let sw = await navigator.serviceWorker.ready;
+      let push = await sw.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: 'BElcEs1_ivIFzqgwap3sxo7GQaG0TJmioMKWGS24KgxPxf62t_eL4HIkQAjRChjBe7qynUVbqkiGJRVI8bs6EwI',
+      });
+      console.log(JSON.stringify(push));
+    }
+
+
+  </script>
+</html>
